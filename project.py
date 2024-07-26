@@ -19,10 +19,10 @@ font = pygame.font.Font(None, 74)
 title_font = pygame.font.Font(None, 120)
 key_name_font = pygame.font.Font(None, 24)
 
-background_image = pygame.image.load('Sky.jpg')
+background_image = pygame.image.load('bluebackground.jpeg')
 background_image = pygame.transform.scale(background_image, (screen_width, screen_height))
 
-home_icon = pygame.image.load('home-removebg-preview.png')
+home_icon = pygame.image.load('whitehouse.png')
 home_icon = pygame.transform.scale(home_icon, (50, 50))
 home_icon_rect = home_icon.get_rect(topleft=(10, 10))
 
@@ -88,16 +88,16 @@ exit_button = Button(505, 450, 200, 100, "Exit", button_color, hover_color, text
 
 keys = []
 num_keys = 14
-key_width = 60
-key_height = 200
-keyboard_width = num_keys * (key_width + 5)
-start_x = (screen_width - keyboard_width) // 2
-start_y = screen_height - 300
+key_width = 80  # Increased key width
+key_height = 250  # Increased key height
+gap = (screen_width - (num_keys * key_width)) // (num_keys + 1)
+start_x = gap
+start_y = screen_height - key_height - 20
 
 for i in range(num_keys):
     sound_file = f'key{i+1:02d}.ogg'
     key_name = f'{i+1}'
-    keys.append(Key(start_x + i * (key_width + 5), start_y, key_width, key_height, white_key_color, white_key_hover_color, sound_file, key_name))
+    keys.append(Key(start_x + i * (key_width + gap), start_y, key_width, key_height, white_key_color, white_key_hover_color, sound_file, key_name))
 
 on_main_screen = True
 running = True
@@ -108,19 +108,16 @@ while running:
             running = False
         if on_main_screen:
             if start_button.click(event):
-                print("Start button clicked")
                 on_main_screen = False
             if exit_button.click(event):
-                print("Exit button clicked")
                 running = False
         else:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if home_icon_rect.collidepoint(event.pos):
-                    print("Home icon clicked")
                     on_main_screen = True
                 for key in keys:
                     if key.click(event):
-                        print(f"Key {key.name} clicked")
+                        pass
 
     screen.blit(background_image, (0, 0))
 
@@ -136,4 +133,5 @@ while running:
     pygame.display.flip()
 
 pygame.quit()
+
 
